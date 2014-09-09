@@ -1,5 +1,6 @@
+require 'bcrypt'
+
 class User
-	require 'bcrypt'
 
 	include DataMapper::Resource
 
@@ -7,7 +8,13 @@ class User
   property :email, String
   property :password_digest, Text
 
+  attr_reader 	 :password
+  attr_accessor :password_confirmation
+
+  validates_confirmation_of :password
+
   def password=(password)
+  	@password = password
   	self.password_digest = BCrypt::Password.create(password)
   end
 
