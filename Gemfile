@@ -11,5 +11,7 @@ group :development, :test do
 	gem "capybara"
 	gem 'launchy'
 	gem 'bcrypt-ruby'
+	gem 'rack-flash3'
+	
 end
 
