@@ -72,6 +72,33 @@ feature 'User signs out' do
   end
 end
 
+feature 'User forgets their password' do
+
+  before(:each) do
+        User.create(:email => "test@test.com",
+                :password => 'test',
+                :password_confirmation => 'test')
+  end
+
+  scenario 'when trying to sign in' do
+    visit '/sessions/new'
+    expect(page).to have_content("Retrieve password")
+    click_link "Retrieve password"
+    expect(page.current_path).to eq '/users/reset_password'
+  end
+
+  scenario "when resetting password" do
+    visit '/users/reset_password'
+    expect(page).to have_field "email"
+    fill_in "email", with: "test@test.com"
+    click_button "request password"
+    expect(page).to have_content("password token has been sent")
+  end
+
+end
+
+
+
 
 
 
