@@ -77,7 +77,9 @@ feature 'User forgets their password' do
   before(:each) do
         User.create(:email => "test@test.com",
                 :password => 'test',
-                :password_confirmation => 'test')
+                :password_confirmation => 'test', 
+                :password_token => '897iauehrgi9o7qyihgrw',
+                :password_token_timestamp => Time.now )
   end
 
   scenario 'when trying to sign in' do
@@ -95,7 +97,64 @@ feature 'User forgets their password' do
     expect(page).to have_content("password token has been sent")
   end
 
+  scenario "when using the token" do
+    visit '/users/reset_password/897iauehrgi9o7qyihgrw'
+    expect(page.current_path).to eq '/users/token_accepted'
+    expect(page).to have_field "password"
+    fill_in "password", with: "i678tuyreg"
+    fill_in "password_confirmation", with: "i678tuyreg"
+    click_button "Submit"
+    expect(page.current_path).to eq '/sessions/new'
+    end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
